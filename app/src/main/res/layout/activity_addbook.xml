@@ -36,17 +36,30 @@
                 android:layout_marginBottom="10dp"/>
 
             <!-- Book Cover Image Upload Placeholder -->
-            <ImageView
-                android:id="@+id/uploadImage"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"
-                android:src="@drawable/uploadimg"
-                android:contentDescription="תמונת כריכת הספר"/>
 
             <!-- 1. Book Name Input -->
+<!--            <ImageView-->
+<!--                android:id="@+id/uploadImage"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:contentDescription="תמונת כריכת הספר"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/uploadimg" />-->
+            <EditText
+                android:id="@+id/uploadImageUrl"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_edittext"
+                android:gravity="start|center_vertical"
+                android:hint="קישור לתמונת כריכת הספר (URL)"
+                android:padding="16dp"
+                android:inputType="textUri"
+                android:textColor="@color/lavender"
+                android:textDirection="rtl"/>
+
             <EditText
                 android:id="@+id/nameofbook"
                 android:layout_width="match_parent"
