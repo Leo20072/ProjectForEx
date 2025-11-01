@@ -35,12 +35,10 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
     EditText uploadImageUrl;
     Button saveButton;
     EditText nameofbook, authorsname, uploadPagesCount, uploadStartDate;
-    String imageURL;
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_addbook);
 
             spinner = findViewById(R.id.uploadCategory);
@@ -81,20 +79,27 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
                     Book newbook = new Book(namebook, author, pagesCount, image, choosecategory,startDate);
 
 
-                    // 4. שמירת הנתונים בנתיב החדש באמצעות setValue()
-                    userBooksRef.child(newBookId).setValue(newbook)
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(Addbook.this, "Book saved successfully for user: " + userId, Toast.LENGTH_SHORT).show();
-                                // עדכון ממשק המשתמש (UI) בהצלחה
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(Addbook.this, "Failed to save book: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                // הצגת הודעת שגיאה למשתמש
-                            });
+                    // 4. שמירת הנתונים בנתיב החדש באמצעות setValue
+                    if (!namebook.equals("") && !author.equals("") && !pagesCount.equals("") && !startDate.equals(""))
+                    {
+                        userBooksRef.child(newBookId).setValue(newbook)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(Addbook.this, "Book saved successfully for user: " + userId, Toast.LENGTH_SHORT).show();
+                                    // עדכון ממשק המשתמש (UI) בהצלחה
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(Addbook.this, "Failed to save book: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    // הצגת הודעת שגיאה למשתמש
+                                });
+                    }
+                    else {
+                        Toast.makeText(Addbook.this, "Failed to save book", Toast.LENGTH_SHORT).show();
+
+                    }
                 }
             }
         });
-
 
     }
 

@@ -88,6 +88,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             // קריאה לפונקציית עדכון שתטמיע בהמשך
             // handleBookEdit(currentBook, currentKey);
             System.out.println("לחצת על עדכן לספר: " + currentBook.getNameOfBook());
+
+            ((ListOfBooks)context).createDialogEdit();
         });
 
         holder.btnView.setOnClickListener(v -> {
@@ -95,6 +97,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             System.out.println("לחצת על צפה לספר: " + currentBook.getNameOfBook());
         });
     }
+
 
     // 5. קבלת מספר הפריטים ברשימה
     @Override

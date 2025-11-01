@@ -36,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, Addbook.class));
-                finish();
             }
         });
+
+
 
         btnlistbooks = findViewById(R.id.btnlistbooks);
         btnlistbooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ListOfBooks.class));
-                finish();
             }
         });
     }

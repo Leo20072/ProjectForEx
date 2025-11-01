@@ -8,7 +8,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,10 +23,20 @@ public class ListOfBooks extends AppCompatActivity {
     private BookAdapter bookAdapter;
     private DatabaseReference userBooksRef;
     private ValueEventListener valueEventListener;
+    Button btnback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_books); // ודא שזה מכיל את ה-RecyclerView
+
+        btnback = findViewById(R.id.btnback);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ListOfBooks.this, MainActivity.class));
+            }
+        });
 
         // 1. אתחול ה-RecyclerView
         recyclerView = findViewById(R.id.booksrecyclerview);
@@ -49,7 +62,9 @@ public class ListOfBooks extends AppCompatActivity {
         }
         String userId = user.getUid();
 
-       userBooksRef = FirebaseDatabase.getInstance().getReference("books").child(userId);
+        userBooksRef = FirebaseDatabase.getInstance().getReference("books").child(userId);
+
+        Query searchQuery;
 
 
         valueEventListener = new ValueEventListener() {
@@ -94,4 +109,12 @@ public class ListOfBooks extends AppCompatActivity {
             userBooksRef.removeEventListener(valueEventListener);
         }
     }
+
+
+    public void createDialogEdit() {
+        CustomDialogEdit customDialog = new CustomDialogEdit(this);
+        customDialog.show();
+    }
+
+
 }
