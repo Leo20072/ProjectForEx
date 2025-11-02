@@ -27,7 +27,7 @@ public class CustomDialogEdit extends Dialog implements View.OnClickListener {
 
         this.btnAdd1CurrentPagesCount = findViewById(R.id.btnAdd1CurrentPagesCount);
         this.btnAdd10CurrentPagesCount = findViewById(R.id.btnAdd10CurrentPagesCount);
-        this.btnsave = findViewById(R.id.btnsave);
+        // this.btnsave = findViewById(R.id.btnsave);
         btnAdd1CurrentPagesCount.setOnClickListener(this);
         btnAdd10CurrentPagesCount.setOnClickListener(this);
         btnsave.setOnClickListener(this);

@@ -164,6 +164,12 @@
                         android:src="@drawable/aiicon"
                         android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:id="@+id/btnAi"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:textColor="?attr/colorPrimary" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView

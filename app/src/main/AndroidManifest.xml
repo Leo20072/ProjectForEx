@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login_and_Signup_new">
         <activity
+            android:name=".AiActivity"
+            android:exported="false" />
+        <activity
             android:name=".CustomDialogEdit"
             android:exported="false" />
         <activity

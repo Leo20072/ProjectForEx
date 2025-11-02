@@ -145,14 +145,7 @@
                 android:textColor="@color/lavender"
                 android:textDirection="rtl"/>
 
-            <Button
-                android:id="@+id/btnsave"
-                android:layout_width="303dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/lavender"
-                android:gravity="center"
-                android:text="שמירה"
-                android:textSize="20dp"></Button>
+
 
 
         </LinearLayout>
