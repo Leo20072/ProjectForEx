@@ -1,5 +1,7 @@
 package com.example.login_and_signup_new;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import android.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         // רכיבי ה-UI מתוך list_item_book.xml
         TextView title, author, pages, category, startDate;
         Button btnView, btnEdit, btnDelete;
+        AlertDialog dialog;
 
         public BookViewHolder(View itemView) {
             super(itemView);
@@ -70,6 +76,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.category.setText("קטגוריה: " + currentBook.getUploadCategory());
         holder.startDate.setText("התחלה: " + currentBook.getUploadStartDate());
 
+
         // טיפול בלחיצות על הכפתורים
         holder.btnDelete.setOnClickListener(v -> {
             // קריאה לפונקציית מחיקה שתטמיע בהמשך
@@ -82,14 +89,23 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
 
 
+
         });
+
 
         holder.btnEdit.setOnClickListener(v -> {
             // קריאה לפונקציית עדכון שתטמיע בהמשך
             // handleBookEdit(currentBook, currentKey);
             System.out.println("לחצת על עדכן לספר: " + currentBook.getNameOfBook());
 
-            ((ListOfBooks)context).createDialogEdit();
+           //((ListOfBooks)context).createDialogEdit();
+
+                // הקריאה החוזרת ל-MainActivity
+            ///onEditBook(currentKey, currentBook);
+            ((ListOfBooks)context).onEditBook(currentKey, currentBook);
+
+
+
         });
 
         holder.btnView.setOnClickListener(v -> {
@@ -111,4 +127,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         this.bookKeys = keys;
         notifyDataSetChanged(); // רענון ה-RecyclerView
     }
+
+
+
 }

@@ -51,7 +51,7 @@
             <EditText
                 android:id="@+id/currentPagesCount"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
                 android:gravity="start|center_vertical"
@@ -145,6 +145,14 @@
                 android:textColor="@color/lavender"
                 android:textDirection="rtl"/>
 
+            <Button
+                android:id="@+id/btnsave"
+                android:layout_width="303dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/lavender"
+                android:gravity="center"
+                android:text="שמירה"
+                android:textSize="20dp"></Button>
 
 
         </LinearLayout>

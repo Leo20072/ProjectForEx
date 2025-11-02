@@ -10,7 +10,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 public class CustomDialogEdit extends Dialog implements View.OnClickListener {
-    Button btnAdd1CurrentPagesCount, btnAdd10CurrentPagesCount;
+    Button btnAdd1CurrentPagesCount, btnAdd10CurrentPagesCount, btnsave;
     Context context;
     EditText currentPagesCount, changeNameBook, changeAuthorsName, changeImage;
 
@@ -27,13 +27,21 @@ public class CustomDialogEdit extends Dialog implements View.OnClickListener {
 
         this.btnAdd1CurrentPagesCount = findViewById(R.id.btnAdd1CurrentPagesCount);
         this.btnAdd10CurrentPagesCount = findViewById(R.id.btnAdd10CurrentPagesCount);
+        this.btnsave = findViewById(R.id.btnsave);
         btnAdd1CurrentPagesCount.setOnClickListener(this);
         btnAdd10CurrentPagesCount.setOnClickListener(this);
+        btnsave.setOnClickListener(this);
+
+
     }
 
 
     @Override
     public void onClick(View view) {
+        if (btnsave == view)
+        {
+
+        }
         if(btnAdd1CurrentPagesCount == view)
         {
             dismiss(); // eliminate the dialog
