@@ -105,12 +105,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"></com.google.android.material.divider.MaterialDivider>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="שינוי שם הספר:"
+                android:textColor="@color/lavender"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="3dp"/>
 
             <EditText
                 android:id="@+id/changeNameBook"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/custom_edittext"
                 android:gravity="start|center_vertical"
                 android:hint="שינוי שם הספר"
@@ -119,11 +127,20 @@
                 android:textColor="@color/lavender"
                 android:textDirection="rtl"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="שינוי שם/שמות המחבר/ים:"
+                android:textColor="@color/lavender"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="3dp"/>
+
             <EditText
             android:id="@+id/changeAuthorsName"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="1dp"
             android:background="@drawable/custom_edittext"
             android:gravity="start|center_vertical"
             android:hint="שינוי שם/שמות המחבר/ים"

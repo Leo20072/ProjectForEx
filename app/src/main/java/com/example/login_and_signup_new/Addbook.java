@@ -35,6 +35,7 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
     EditText uploadImageUrl;
     Button saveButton;
     EditText nameofbook, authorsname, uploadPagesCount, uploadStartDate;
+    String pagesread = String.valueOf(0);
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
                 String newBookId = userBooksRef.push().getKey();
 
                 if (newBookId != null) {
-                    Book newbook = new Book(namebook, author, pagesCount, image, choosecategory,startDate);
+                    Book newbook = new Book(namebook, author, pagesCount, image, choosecategory,startDate,pagesread);
 
 
                     // 4. שמירת הנתונים בנתיב החדש באמצעות setValue

@@ -135,7 +135,6 @@ public class ListOfBooks extends AppCompatActivity {
     private void showEditBookDialog(String bookKey, Book bookToEdit) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //builder.setTitle("עריכת פרטי ספר");
-
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog_edit, null);
         builder.setView(dialogView);

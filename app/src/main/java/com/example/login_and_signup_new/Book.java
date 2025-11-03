@@ -7,6 +7,15 @@ public class Book {
     private String uploadImageUrl;
     private String uploadCategory;
     private String uploadStartDate;
+    private String pagesread;
+
+    public String getPagesread() {
+        return pagesread;
+    }
+
+    public void setPagesread(String pagesread) {
+        this.pagesread = pagesread;
+    }
 
     public String getNameOfBook() {
         return nameOfBook;
@@ -58,13 +67,14 @@ public class Book {
 
     public Book(){
     }
-    public Book(String nameOfBook, String authorsname, String uploadPagesCount, String uploadImageUrl, String uploadCategory, String uploadStartDate) {
+    public Book(String nameOfBook, String authorsname, String uploadPagesCount, String uploadImageUrl, String uploadCategory, String uploadStartDate, String pagesread) {
         this.nameOfBook = nameOfBook;
         this.authorsname = authorsname;
         this.uploadPagesCount = uploadPagesCount;
         this.uploadImageUrl = uploadImageUrl;
         this.uploadCategory = uploadCategory;
         this.uploadStartDate = uploadStartDate;
+        this.pagesread = pagesread;
     }
 
 }
