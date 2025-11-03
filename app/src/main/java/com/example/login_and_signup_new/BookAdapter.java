@@ -3,10 +3,14 @@ package com.example.login_and_signup_new;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +43,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         // רכיבי ה-UI מתוך list_item_book.xml
         TextView title, author, pages, category, startDate;
         Button btnView, btnEdit, btnDelete;
+        private ImageView imageViewResult;
+
         AlertDialog dialog;
 
         public BookViewHolder(View itemView) {
             super(itemView);
+            imageViewResult = itemView.findViewById(R.id.imageViewResult);
             title = itemView.findViewById(R.id.tv_book_title);
             author = itemView.findViewById(R.id.tv_book_author);
             pages = itemView.findViewById(R.id.tv_pages_count);
@@ -69,12 +76,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book currentBook = booksList.get(position);
         final String currentKey = bookKeys.get(position); // המפתח הייחודי
 
+        String base64 = currentBook.getUploadImageUrl();
+        Bitmap decodedBitmap = decodeImage(base64);
+
+
         // הצגת פרטי הספר
         holder.title.setText(currentBook.getNameOfBook());
         holder.author.setText("מאת: " + currentBook.getAuthorsname());
         holder.pages.setText("עמודים: " + currentBook.getUploadPagesCount());
         holder.category.setText("קטגוריה: " + currentBook.getUploadCategory());
         holder.startDate.setText("התחלה: " + currentBook.getUploadStartDate());
+        holder.imageViewResult.setImageBitmap(decodedBitmap);
 
 
         // טיפול בלחיצות על הכפתורים
@@ -128,6 +140,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         notifyDataSetChanged(); // רענון ה-RecyclerView
     }
 
-
-
+    // --- פונקציה להמרת Base64 String חזרה ל-Bitmap (כמו בקוד הקודם) ---
+    public static Bitmap decodeImage(String base64String) {
+        byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
 }
+
+

@@ -35,6 +35,7 @@ public class ListOfBooks extends AppCompatActivity {
     private ValueEventListener valueEventListener;
     Button btnback;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,8 +142,8 @@ public class ListOfBooks extends AppCompatActivity {
 
         EditText etTitle = dialogView.findViewById(R.id.changeNameBook);
         EditText etAuthor = dialogView.findViewById(R.id.changeAuthorsName);
-        EditText etPages = dialogView.findViewById(R.id.currentPagesCount); // חדש
-        EditText etImageUrl = dialogView.findViewById(R.id.changeImage); // חדש
+        EditText etPages = dialogView.findViewById(R.id.currentPagesCount);
+        EditText etImageUrl = dialogView.findViewById(R.id.changeImage);
 
         // 2. מילוי השדות בנתונים הנוכחיים של הספר
         etTitle.setText(bookToEdit.getNameOfBook());

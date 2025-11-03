@@ -149,6 +149,23 @@
             android:textColor="@color/lavender"
             android:textDirection="rtl"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="הוספת תמונת ספר:"
+                android:textColor="@color/lavender"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="3dp"/>
+            <Button
+                android:id="@+id/btnSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="בחר תמונה מהגלריה"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="10dp"/>
+
             <EditText
                 android:id="@+id/changeImage"
                 android:layout_width="match_parent"
@@ -160,7 +177,8 @@
                 android:padding="16dp"
                 android:inputType="textUri"
                 android:textColor="@color/lavender"
-                android:textDirection="rtl"/>
+                android:textDirection="rtl"
+                android:visibility="gone"/>
 
 
 

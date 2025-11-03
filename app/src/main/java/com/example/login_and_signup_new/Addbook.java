@@ -1,7 +1,14 @@
 package com.example.login_and_signup_new;
 
+import static android.opengl.ETC1.encodeImage;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.util.Base64;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,6 +37,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class Addbook extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
     private String[] arrCategories = { "מדע בדיוני", "פנטזיה", "מתח / מותחן", "בלשי", "רומן רומנטי", "אימה", "היסטורי" };
@@ -37,10 +49,25 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
     EditText nameofbook, authorsname, uploadPagesCount, uploadStartDate;
     String pagesread = String.valueOf(0);
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    // המרה תמונה לטקסט
+    private Button btnSelectImage;
+    private static final String TAG = "Base64Converter";
+    private static final int PICK_IMAGE_REQUEST = 1;
+    String base64String = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addbook);
+        btnSelectImage = findViewById(R.id.btnSelectImage);
+
+        // הגדרת המאזין (Listener) לכפתור
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // קריאה לפונקציה לפתיחת הגלריה
+                openGallery();
+            }
+        });
 
             spinner = findViewById(R.id.uploadCategory);
         spinner.setOnItemSelectedListener(this);
@@ -49,7 +76,6 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa);
 
-        uploadImageUrl = findViewById(R.id.uploadImageUrl);
         nameofbook = findViewById(R.id.nameofbook);
         authorsname = findViewById(R.id.authorsname);
         uploadPagesCount = findViewById(R.id.uploadPagesCount);
@@ -61,7 +87,7 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onClick(View view) {
                 String namebook = nameofbook.getText().toString();
-                String image = uploadImageUrl.getText().toString();
+                //String image = uploadImageUrl.getText().toString();
                 String author = authorsname.getText().toString();
                 String pagesCount = uploadPagesCount.getText().toString();
                 String startDate = uploadStartDate.getText().toString();
@@ -77,7 +103,7 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
                 String newBookId = userBooksRef.push().getKey();
 
                 if (newBookId != null) {
-                    Book newbook = new Book(namebook, author, pagesCount, image, choosecategory,startDate,pagesread);
+                    Book newbook = new Book(namebook, author, pagesCount, base64String, choosecategory,startDate,pagesread);
 
 
                     // 4. שמירת הנתונים בנתיב החדש באמצעות setValue
@@ -104,6 +130,36 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 
+    // פונקציה לפתיחת הגלריה
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    // קבלת התוצאה לאחר בחירת התמונה מהגלריה
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // ודא שהתוצאה היא מתאימה (בחירת תמונה הצליחה)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            try {
+                // המרת ה-URI ל-Bitmap
+                Bitmap selectedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+                // --- המרה ל-Base64 ---
+                base64String =encodeImage(selectedBitmap);
+                Log.d(TAG, "Encoded Base64 String: " + base64String.substring(0, Math.min(base64String.length(), 50)) + "...");
+                Toast.makeText(this, "התמונה קודדה ל-Base64", Toast.LENGTH_SHORT).show();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "שגיאה בטעינת התמונה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -114,4 +170,19 @@ public class Addbook extends AppCompatActivity implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    // --- פונקציה להמרת Bitmap ל-Base64 (כמו בקוד הקודם) ---
+    public static String encodeImage(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // דחיסה עם איכות, ניתן לשנות את האיכות כאן אם התמונה גדולה מדי
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
+        byte[] imageBytes = outputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+//    // --- פונקציה להמרת Base64 String חזרה ל-Bitmap (כמו בקוד הקודם) ---
+//    public static Bitmap decodeImage(String base64String) {
+//        byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+//        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+//    }
 }
