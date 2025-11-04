@@ -46,6 +46,7 @@ public class ListOfBooks extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView imageViewResult;
     String base64String;
+    //int numberpages = 0;
 
 
     @Override
@@ -157,6 +158,8 @@ public class ListOfBooks extends AppCompatActivity {
         EditText etPages = dialogView.findViewById(R.id.currentPagesCount);
         EditText etImageUrl = dialogView.findViewById(R.id.changeImage);
         Button btnSelectImage = dialogView.findViewById(R.id.btnSelectImage);
+        base64String = bookToEdit.getUploadImageUrl();
+        Button btnAdd1CurrentPagesCount = dialogView.findViewById(R.id.btnAdd1CurrentPagesCount);
 
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +180,16 @@ public class ListOfBooks extends AppCompatActivity {
         etAuthor.setText(bookToEdit.getAuthorsname());
         etPages.setText(bookToEdit.getUploadPagesCount()); // מילוי מספר העמודים
         etImageUrl.setText(bookToEdit.getUploadImageUrl()); // מילוי קישור התמונה
+     //   String strnaumpages = bookToEdit.getPagesread();
+        final int[] pagesRead = {Integer.parseInt(bookToEdit.getPagesread())};
+        //numberpages = Integer.parseInt(strnaumpages);
+        btnAdd1CurrentPagesCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagesRead[0] = pagesRead[0] + 1;
+            }
+        });
+
 
         // 3. כפתור 'שמור' (עדכון הנתונים ב-Firebase)
         builder.setPositiveButton("שמור שינויים", (dialog, id) -> {
@@ -186,6 +199,7 @@ public class ListOfBooks extends AppCompatActivity {
             String newAuthor = etAuthor.getText().toString().trim();
             String newPagesCount = etPages.getText().toString().trim();
             String newImageUrl = base64String;
+            String newstrnaumpages = Integer.toString(pagesRead[0]);
 
             if (newTitle.isEmpty() || newAuthor.isEmpty()) {
                 Toast.makeText(this, "שם הספר ושם המחבר אינם יכולים להיות ריקים.", Toast.LENGTH_LONG).show();
@@ -200,6 +214,7 @@ public class ListOfBooks extends AppCompatActivity {
             updatedBook.setAuthorsname(newAuthor);
             updatedBook.setUploadPagesCount(newPagesCount);
             updatedBook.setUploadImageUrl(newImageUrl);
+            updatedBook.setPagesread(newstrnaumpages);
 
             // --- 2. שדות שאינם ניתנים לעריכה (העתקה מהאובייקט המקורי) ---
             // נתונים אלה חיוניים כדי לא לאבד אותם ב-Firebase!
@@ -245,6 +260,7 @@ public class ListOfBooks extends AppCompatActivity {
         bookValues.put("uploadImageUrl", updatedBook.getUploadImageUrl());
         bookValues.put("uploadPagesCount", updatedBook.getUploadPagesCount());
         bookValues.put("uploadStartDate", updatedBook.getUploadStartDate());
+        bookValues.put("pagesread", updatedBook.getPagesread());
 
         // 4. ביצוע פעולת העדכון (updateChildren)
         bookToUpdateRef.updateChildren(bookValues)
