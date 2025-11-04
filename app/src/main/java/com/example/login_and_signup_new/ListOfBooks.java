@@ -14,13 +14,21 @@ import com.google.firebase.database.*;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +42,10 @@ public class ListOfBooks extends AppCompatActivity {
     private DatabaseReference userBooksRef;
     private ValueEventListener valueEventListener;
     Button btnback;
+    private static final String TAG = "Base64Converter";
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private ImageView imageViewResult;
+    String base64String;
 
 
     @Override
@@ -144,6 +156,21 @@ public class ListOfBooks extends AppCompatActivity {
         EditText etAuthor = dialogView.findViewById(R.id.changeAuthorsName);
         EditText etPages = dialogView.findViewById(R.id.currentPagesCount);
         EditText etImageUrl = dialogView.findViewById(R.id.changeImage);
+        Button btnSelectImage = dialogView.findViewById(R.id.btnSelectImage);
+
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // קריאה לפונקציה לפתיחת הגלריה
+                openGallery();
+            }
+
+            private void openGallery() {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+        });
+
 
         // 2. מילוי השדות בנתונים הנוכחיים של הספר
         etTitle.setText(bookToEdit.getNameOfBook());
@@ -158,7 +185,7 @@ public class ListOfBooks extends AppCompatActivity {
             String newTitle = etTitle.getText().toString().trim();
             String newAuthor = etAuthor.getText().toString().trim();
             String newPagesCount = etPages.getText().toString().trim();
-            String newImageUrl = etImageUrl.getText().toString().trim();
+            String newImageUrl = base64String;
 
             if (newTitle.isEmpty() || newAuthor.isEmpty()) {
                 Toast.makeText(this, "שם הספר ושם המחבר אינם יכולים להיות ריקים.", Toast.LENGTH_LONG).show();
@@ -237,7 +264,36 @@ public class ListOfBooks extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // ודא שהתוצאה היא מתאימה (בחירת תמונה הצליחה)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            try {
+                // המרת ה-URI ל-Bitmap
+                Bitmap selectedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+                // --- המרה ל-Base64 ---
+                base64String = encodeImage(selectedBitmap);
+                Log.d(TAG, "Encoded Base64 String: " + base64String.substring(0, Math.min(base64String.length(), 50)) + "...");
+                Toast.makeText(this, "התמונה קודדה ל-Base64", Toast.LENGTH_SHORT).show();
 
 
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "שגיאה בטעינת התמונה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public static String encodeImage(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // דחיסה עם איכות, ניתן לשנות את האיכות כאן אם התמונה גדולה מדי
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
+        byte[] imageBytes = outputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 
 }

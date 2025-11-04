@@ -83,17 +83,17 @@
 
                 <Button
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:text="להוסיף עמוד 1 שקראת"
-                    android:textSize="20dp"
+                    android:textSize="19dp"
                     android:backgroundTint="@color/lavender"
                     android:id="@+id/btnAdd1CurrentPagesCount"></Button>
 
                 <Button
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:text="להוסיף עמוד 10 שקראת"
-                    android:textSize="20dp"
+                    android:textSize="19dp"
                     android:id="@+id/btnAdd10CurrentPagesCount"
                     android:backgroundTint="@color/lavender"
                     android:layout_marginLeft="12dp"></Button>
